@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function ImageCard({ data }) {
+  const [showMore, setShowMore] = useState(false);
+
+  const toggleShowMore = () => {
+    setShowMore((prev) => !prev);
+  };
+
   return (
-    <div>
+    <div className="image-card">
       <h2>{data.title}</h2>
       {data.media_type === 'image' ? (
-        <img src={data.url} alt={data.title} style={{ maxWidth: '100%' }} />
+        <img src={data.url} alt={data.title} className="image" />
       ) : (
         <iframe
           src={data.url}
@@ -13,10 +19,15 @@ function ImageCard({ data }) {
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen
-          style={{ width: '100%', height: '500px' }}
+          className="video"
         ></iframe>
       )}
-      <p>{data.explanation}</p>
+      <p className="description">
+        {showMore ? data.explanation : `${data.explanation.slice(0, 100)}...`}
+      </p>
+      <button onClick={toggleShowMore} className="toggle-button">
+        {showMore ? 'Show Less' : 'Show More'}
+      </button>
     </div>
   );
 }
